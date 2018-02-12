@@ -1,5 +1,7 @@
 Probably best switch to Booking System for a Cinema
 
+Potential Parts to Program:
+
 Seat
   Row
   seat no
@@ -20,5 +22,5 @@ Users
 Calendar
   
 
-
+Main Function is booking a seat
 
