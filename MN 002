@@ -1,0 +1,24 @@
+Probably best switch to Booking System for a Cinema
+
+Seat
+  Row
+  seat no
+  Seat type (Normal, Disabled, premium etc etc)
+
+Screen
+  Screen No
+  Amount of each type of seat
+
+Films
+  Film Title
+  Run Time
+
+Users
+  Admin, ie sets film times etc
+  Customer level
+
+Calendar
+  
+
+
+
