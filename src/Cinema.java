@@ -32,7 +32,7 @@ public class Cinema {
         int selected = keyboard.nextInt();
 
         while (selected > cinema.movies.size() || selected < 1){
-            System.out.println("SELECT MOVIE: ");
+            System.out.println("SELECT MOVIE: ("+1+"-"+cinema.movies.size()+") ");
             selected = keyboard.nextInt();
         }
 
@@ -42,7 +42,7 @@ public class Cinema {
         String d = cinema.movies.get(selected-1).getDescription();
 
 
-        System.out.println(t+" - "+r+" - "+m+"mins");
+        System.out.println(t+" - "+r+" - "+m+"mins"+"\n");
 
         String[] desc = d.split("\\s");
         int step = 15;
@@ -55,7 +55,14 @@ public class Cinema {
             }
         }
 
+        ArrayList<Showing> times = cinema.movies.get(selected-1).getShowings();
 
+        System.out.println("\n"+"TODAY'S SHOWING TIMES");
+        for (int i =0;i<times.size();i++){
+
+            System.out.println((i+1)+" - "+times.get(i));
+
+        }
 
 
     }
