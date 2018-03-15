@@ -13,10 +13,6 @@ public class Showing {
 
     @Override
     public String toString() {
-        return "Showing{" +
-                "time='" + time + '\'' +
-                ", seats=" + seats +
-                ", availableSeats=" + availableSeats +
-                '}';
+        return ""+time;
     }
 }

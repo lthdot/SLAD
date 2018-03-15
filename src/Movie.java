@@ -15,23 +15,24 @@ public class Movie {
         this.mins = m;
         this.rating = r;
         this.description = d;
-        showings.add(new Showing("1400",50));
-        showings.add(new Showing("1700",50));
-        showings.add(new Showing("2000",50));
+        showings.add(new Showing("1500",50));
+        showings.add(new Showing("1800",50));
+        showings.add(new Showing("2100",50));
     }
 
     public ArrayList<Showing> getShowings() {
         return showings;
     }
 
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "title='" + title + '\'' +
-                ", year=" + year +
-                ", mins=" + mins +
-                ", rating='" + rating + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    public String getTitle() {
+        return title;
+    }
+
+    public int getMins() {
+        return mins;
+    }
+
+    public String getRating() {
+        return rating;
     }
 }
