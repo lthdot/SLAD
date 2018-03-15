@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Cinema {
 
@@ -21,11 +22,42 @@ public class Cinema {
         System.out.println(" \\ \\_____\\  \\ \\_\\  \\ \\_\\\\\"\\_\\  \\ \\_____\\  \\ \\_\\ \\ \\_\\  \\ \\_\\ \\_\\");
         System.out.println("  \\/_____/   \\/_/   \\/_/ \\/_/   \\/_____/   \\/_/  \\/_/   \\/_/\\/_/"+'\n');
         getMovies();
-
     }
 
     public static void main(String[] args) {
         Cinema cinema = new Cinema();
+
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println('\n'+"SELECT MOVIE: ");
+        int selected = keyboard.nextInt();
+
+        while (selected > cinema.movies.size() || selected < 1){
+            System.out.println("SELECT MOVIE: ");
+            selected = keyboard.nextInt();
+        }
+
+        String t = cinema.movies.get(selected-1).getTitle();
+        String r = cinema.movies.get(selected-1).getRating();
+        int m = cinema.movies.get(selected-1).getMins();
+        String d = cinema.movies.get(selected-1).getDescription();
+
+
+        System.out.println(t+" - "+r+" - "+m+"mins");
+
+        String[] desc = d.split("\\s");
+        int step = 15;
+        String desc2 = "";
+        for (int i =0;i<desc.length;i++){
+            desc2 = desc2+desc[i]+" ";
+            if (i > 0 && i % step == 0) {
+                System.out.print(desc2 + "\n");
+                desc2 = "";
+            }
+        }
+
+
+
+
     }
 
 
@@ -35,11 +67,12 @@ public class Cinema {
     }
 
     public void getMovies(){
+
+        System.out.println("MOVIES CURRENTLY SHOWING");
         for (int i=0;i<movies.size();i++){
             String t = movies.get(i).getTitle();
             String r = movies.get(i).getRating();
             int m = movies.get(i).getMins();
-            ArrayList<Showing> showings = movies.get(i).getShowings();
             System.out.println((i+1)+" - "+t+" - "+r+" - "+m+"mins"+'\n'+"    "+movies.get(i).getShowings());
         }
     }

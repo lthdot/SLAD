@@ -11,7 +11,6 @@ public class Movie {
     public Movie(String t, int y, int m, String r, String d) {
         showings = new ArrayList<Showing>();
         this.title = t;
-        this.year = y;
         this.mins = m;
         this.rating = r;
         this.description = d;
@@ -22,6 +21,10 @@ public class Movie {
 
     public ArrayList<Showing> getShowings() {
         return showings;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getTitle() {
