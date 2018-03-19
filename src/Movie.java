@@ -16,7 +16,7 @@ public class Movie {
         this.description = d;
         showings.add(new Showing("1500",50));
         showings.add(new Showing("1800",50));
-        showings.add(new Showing("2100",50));
+        showings.add(new Showing("2100",0));
     }
 
     public ArrayList<Showing> getShowings() {

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Cinema {
@@ -21,48 +22,112 @@ public class Cinema {
         System.out.println("\\ \\ \\____  \\ \\ \\  \\ \\ \\-.  \\  \\ \\  __\\   \\ \\ \\-./\\ \\  \\ \\  __ \\ ");
         System.out.println(" \\ \\_____\\  \\ \\_\\  \\ \\_\\\\\"\\_\\  \\ \\_____\\  \\ \\_\\ \\ \\_\\  \\ \\_\\ \\_\\");
         System.out.println("  \\/_____/   \\/_/   \\/_/ \\/_/   \\/_____/   \\/_/  \\/_/   \\/_/\\/_/"+'\n');
-        getMovies();
+
     }
 
     public static void main(String[] args) {
+
+        //Create Cinema instance
         Cinema cinema = new Cinema();
+        int movie = 0;
+        int showing = 0;
+        String yn = "";
 
-        Scanner keyboard = new Scanner(System.in);
-        System.out.println('\n'+"SELECT MOVIE: ");
-        int selected = keyboard.nextInt();
+        while (movie == 0){
 
-        while (selected > cinema.movies.size() || selected < 1){
-            System.out.println("SELECT MOVIE: ("+1+"-"+cinema.movies.size()+") ");
-            selected = keyboard.nextInt();
-        }
+            //Get Movies
+            cinema.getMovies();
 
-        String t = cinema.movies.get(selected-1).getTitle();
-        String r = cinema.movies.get(selected-1).getRating();
-        int m = cinema.movies.get(selected-1).getMins();
-        String d = cinema.movies.get(selected-1).getDescription();
-
-
-        System.out.println(t+" - "+r+" - "+m+"mins"+"\n");
-
-        String[] desc = d.split("\\s");
-        int step = 15;
-        String desc2 = "";
-        for (int i =0;i<desc.length;i++){
-            desc2 = desc2+desc[i]+" ";
-            if (i > 0 && i % step == 0) {
-                System.out.print(desc2 + "\n");
-                desc2 = "";
+            //Select Movie
+            Scanner keyboard = new Scanner(System.in);
+            System.out.println('\n'+"SELECT MOVIE: ");
+            movie = 0;
+            try {
+                movie = keyboard.nextInt();
+            } catch (InputMismatchException e){
+                System.out.println("Integers only, please.");
             }
+
+            while (movie > cinema.movies.size() || movie < 1){
+                keyboard = new Scanner(System.in);
+                System.out.println("SELECT MOVIE: ("+1+"-"+cinema.movies.size()+") ");
+                try {
+                    movie = keyboard.nextInt();
+                } catch (InputMismatchException e){
+                    System.out.println("Integers only, please.");
+                }
+            }
+            showing = 0;
+            while (showing == 0){
+                //Get Showings of selected Movie
+                cinema.getShowings(movie-1);
+
+                //Select Showing
+                keyboard = new Scanner(System.in);
+                showing = 0;
+                System.out.println('\n'+"SELECT SHOWING: ");
+                try {
+                    showing = keyboard.nextInt();
+                } catch (InputMismatchException e){
+                    System.out.println("INTEGERS ONLY, PLEASE.");
+                }
+
+                while (showing > cinema.movies.size()+1 || showing < 1){
+                    keyboard = new Scanner(System.in);
+                    System.out.println("SELECT SHOWING: ("+1+"-"+cinema.movies.get(movie-1).getShowings().size()+") ");
+                    try {
+                        showing = keyboard.nextInt();
+                    } catch (InputMismatchException e){
+                        System.out.println("INTEGERS ONLY, PLEASE.");
+                    }
+                }
+
+                //if "SELECT ANOTHER MOVIE" - restart
+                if (showing == cinema.movies.size()+1){
+                    movie = 0;
+                } else {
+                    //else Get Available Seats
+                    String a = cinema.getAvailability(movie-1,showing-1);
+                    if (a.equals("NO SEATS AVAILABLE")){
+                        System.out.println("NO SEATS AVAILABLE");
+                        System.out.println("PLEASE SELECT ANOTHER SHOWING");
+                        System.out.println("--------------------");
+                        showing = 0;
+                    } else {
+                        yn = "";
+                        System.out.println(a);
+                        System.out.println("--------------------");
+                        while (yn == ""){
+                            System.out.println("WOULD YOU LIKE TO BOOK AN ADULT TICKET? (Y/N)");
+                            keyboard = new Scanner(System.in);
+                            yn = keyboard.next();
+                            if (yn.toLowerCase().contains("y")){
+                                cinema.addBooking();
+                                cinema.movies.get(movie-1).getShowings().get(showing-1).bookSeat();
+                                movie = 0;
+                            } else if (yn.toLowerCase().contains("n")){
+                                System.out.println("PLEASE SELECT ANOTHER SHOWING");
+                                System.out.println("--------------------");
+                                showing = 0;
+                            } else {
+                                System.out.println("Y/N ONLY, PLEASE.");
+                                yn = "";
+                            }
+                        }
+
+
+
+                    }
+
+
+                }
+            }
+
+
+
         }
 
-        ArrayList<Showing> times = cinema.movies.get(selected-1).getShowings();
 
-        System.out.println("\n"+"TODAY'S SHOWING TIMES");
-        for (int i =0;i<times.size();i++){
-
-            System.out.println((i+1)+" - "+times.get(i));
-
-        }
 
 
     }
@@ -82,5 +147,58 @@ public class Cinema {
             int m = movies.get(i).getMins();
             System.out.println((i+1)+" - "+t+" - "+r+" - "+m+"mins"+'\n'+"    "+movies.get(i).getShowings());
         }
+    }
+
+    public void getShowings(int m){
+
+        String t = movies.get(m).getTitle();
+        String r = movies.get(m).getRating();
+        int mins = movies.get(m).getMins();
+        String d = movies.get(m).getDescription();
+
+
+        System.out.println(t+" - "+r+" - "+mins+"mins"+"\n");
+
+        String[] desc = d.split("\\s");
+        int step = 15;
+        String desc2 = "";
+        for (int i =0;i<desc.length;i++){
+            desc2 = desc2+desc[i]+" ";
+            if (i > 0 && i % step == 0) {
+                System.out.print(desc2 + "\n");
+                desc2 = "";
+            }
+        }
+
+        ArrayList<Showing> times = movies.get(m).getShowings();
+
+        System.out.println("\n"+"TODAY'S SHOWING TIMES");
+        for (int i =0;i<times.size()+1;i++){
+            if (i==times.size()){
+                System.out.println((i+1)+" - SELECT ANOTHER MOVIE");
+            } else {
+                if (times.get(i).getAvailableSeats()==0){
+                    System.out.println((i+1)+" - "+times.get(i)+" - FULLY BOOKED");
+                } else {
+                    System.out.println((i+1)+" - "+times.get(i));
+                }
+
+            }
+
+
+        }
+    }
+
+    public String getAvailability(int m, int s){
+        String available;
+        ArrayList<Showing> times = movies.get(m).getShowings();
+        int availableSeats = times.get(s).getAvailableSeats();
+        if (availableSeats == 0){
+            available = "NO SEATS AVAILABLE";
+        } else {
+            int seats = times.get(s).getSeats();
+            available = "AVAILABLE SEATS: "+availableSeats+"/"+seats;
+        }
+        return available;
     }
 }
