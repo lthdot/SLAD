@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Movie {
+public class Movie {    //Class type for movies.
     private String title;
     private int year;
     private int mins;
